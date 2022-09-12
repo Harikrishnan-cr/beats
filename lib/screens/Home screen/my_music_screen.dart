@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:beat/database/functions/database_function.dart';
 import 'package:beat/music%20functions/play_audio_function.dart';
 import 'package:beat/now%20playing/now_playing_screen.dart';
 import 'package:beat/screens/splash%20screen/splash_screen.dart';
@@ -18,6 +19,7 @@ class _MyMusicScreenState extends State<MyMusicScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    playListUpdate();
     return SingleChildScrollView(
       child: Column(children: [
         ListView.separated(

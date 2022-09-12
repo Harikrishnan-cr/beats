@@ -100,8 +100,8 @@ ValueNotifier<List<dynamic>> playlistAddList = ValueNotifier([]);
 
 Future<void> playListUpdate() async {
   playlistAddList.value.clear();
-  final allkey1 = playlistDB.keys.toList();
-  playlistAddList.value = allkey1;
+  final playlistKey = playlistDB.keys.toList();
+  playlistAddList.value = playlistKey;
   
 }
 

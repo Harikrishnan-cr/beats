@@ -249,11 +249,17 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(
-                Icons.loop_rounded,
-                color: Colors.white,
-                size: 25,
-              ),
+            IconButton(onPressed: () {
+              if(loopButton.value){
+                audioPlayer.setLoopMode(LoopMode.single);
+                loopButton.value = false;
+              }else{
+                    audioPlayer.setLoopMode(LoopMode.none);
+                loopButton.value = true;
+              }
+            }, icon:ValueListenableBuilder(valueListenable: loopButton, builder: (context, value, child) {
+              return loopButton.value ? const Icon(Icons.repeat,color: Colors.white,size: 25,) :  const Icon(Icons.repeat_one,color:Color.fromARGB(255, 149, 6, 175),size: 28,);
+            },) ),
               IconButton(
                   onPressed: (() {
                     addToPlayList(context,
