@@ -1,5 +1,3 @@
-
-
 import 'package:beat/screens/splash%20screen/splash_screen.dart';
 import 'package:beat/widget%20functions/widget_functions.dart';
 
@@ -37,7 +35,13 @@ class SettingsScreen extends StatelessWidget {
             SizedBox(
               height: screenHeight * 0.05,
             ),
-            const Text('Version : 1.0.0',style: TextStyle(color: Color.fromARGB(174, 184, 182, 182),fontSize: 13,fontWeight: FontWeight.bold),),
+            const Text(
+              'Version : 1.0.0',
+              style: TextStyle(
+                  color: Color.fromARGB(174, 184, 182, 182),
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+            ),
             // SizedBox(
             //   height: screenHeight * 0.03,
             // ),
@@ -99,7 +103,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                        const Icon(
+                      const Icon(
                         Icons.notifications_active,
                         size: 24,
                         color: Colors.white,
@@ -107,18 +111,21 @@ class SettingsScreen extends StatelessWidget {
                       const SizedBox(
                         width: 18,
                       ),
-                     const Text('Notifications',style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18.5,
-                              color: Colors.white),),
-                              SizedBox(width: screenWidth * 0.200),
+                      const Text(
+                        'Notifications',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18.5,
+                            color: Colors.white),
+                      ),
+                      SizedBox(width: screenWidth * 0.200),
                       ValueListenableBuilder(
                           valueListenable: notification,
                           builder: (context, value, child) {
                             return Switch(
                               activeTrackColor: secondaryColour,
                               activeColor: secondaryColour,
-                              inactiveTrackColor:secondaryColour,
+                              inactiveTrackColor: secondaryColour,
                               value: notification.value,
                               autofocus: true,
                               onChanged: ((value) {
@@ -140,7 +147,8 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: screenWidth * 0.08, vertical: screenWidth * 0.01),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.08, vertical: screenWidth * 0.01),
               child: Column(
                 children: [
                   Row(
@@ -152,64 +160,65 @@ class SettingsScreen extends StatelessWidget {
                               color: Colors.white)),
                     ],
                   ),
-                   Row(
-                    children: [
-                      IconButton(
-                        padding: const EdgeInsets.all(0),
-                        onPressed: () {
-                        
-                      }, icon: const Icon(Icons.privacy_tip,size: 20,
-                        color: Colors.white,)),
-                     
-                       TextButton(
-                      onPressed: () {
-                        
-                      }, child:const Text('PRIVACY POLICY',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 17,
-                              color: Colors.white))),
-                    ],
-                  ),
-                  
-                 
-                   Row(
-                    children: [
-                      IconButton(
-                         padding: const EdgeInsets.all(0),
-                        onPressed: () {
-                        
-                      }, icon: const Icon(Icons.share,size: 20,
-                        color: Colors.white,)),
-                     
-                       TextButton(
-                      onPressed: () {
-                        
-                      }, child:const Text('SHARE',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 17,
-                              color: Colors.white))),
-                    ],
-                  ),
-                
                   Row(
                     children: [
                       IconButton(
-                         padding: const EdgeInsets.all(0),
-                        onPressed: () {
-                        aboutAlertDialogBox(context);
-                      }, icon: const Icon(Icons.info,size: 20,
-                        color: Colors.white,)),
-                     
-                       TextButton(
-                      onPressed: () {
-                        aboutAlertDialogBox(context);
-                      }, child:const Text('ABOUT',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 17,
-                              color: Colors.white))),
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.privacy_tip,
+                            size: 20,
+                            color: Colors.white,
+                          )),
+                      TextButton(
+                          onPressed: () {},
+                          child: const Text('PRIVACY POLICY',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
+                                  color: Colors.white))),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.share,
+                            size: 20,
+                            color: Colors.white,
+                          )),
+                      TextButton(
+                          onPressed: () {},
+                          child: const Text('SHARE',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
+                                  color: Colors.white))),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () {
+                            aboutAlertDialogBox(context);
+                          },
+                          icon: const Icon(
+                            Icons.info,
+                            size: 20,
+                            color: Colors.white,
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            aboutAlertDialogBox(context);
+                          },
+                          child: const Text('ABOUT',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
+                                  color: Colors.white))),
                     ],
                   ),
                 ],
@@ -221,58 +230,59 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  Future<dynamic> aboutAlertDialogBox(ctx) {
+    return showDialog(
+      context: ctx,
+      builder: (context) {
+        return AlertDialog(
+          titlePadding: const EdgeInsets.all(12),
+          title: const ListTile(
+            contentPadding: EdgeInsets.all(0),
+            minVerticalPadding: 0,
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/images/beats-logo.png'),
+            ),
+            title: Text(
+              "BEATS",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  letterSpacing: 1.2),
+            ),
+            subtitle: Text(
+                "It is a Ad free Music player Play all Music from your Local Storage",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(209, 111, 110, 110))),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                licenceMusicApp(context);
+              },
+              child: const Text("License"),
+            ),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Close"))
+          ],
+        );
+      },
+    );
+  }
 
-
- Future<dynamic> aboutAlertDialogBox(ctx) {
-   
-  return showDialog(context: ctx, builder: (context) {
-    return AlertDialog(
-                            titlePadding: const EdgeInsets.all(12),
-                            title:  const ListTile(
-                              contentPadding:  EdgeInsets.all(0),
-                              minVerticalPadding: 0,
-                              leading: CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage:
-                                    AssetImage('assets/images/beats-logo.png'),
-                              ),
-                              title: Text("BEATS",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,letterSpacing: 1.2),
-                                  ),
-                              subtitle:  Text(
-                                  "It is a Ad free Music player Play all Music from your Local Storage",style: TextStyle(fontWeight: FontWeight.w500,color: Color.fromARGB(209, 111, 110, 110))),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  licenceMusicApp(context);
-                                
-                                     
-                                },
-                                child: const Text("License"),
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Close"))
-                            ],
-                          );
-  },);
+  licenceMusicApp(ctx) {
+    showLicensePage(
+        context: ctx,
+        applicationName: "Beats",
+        applicationIcon: Image.asset(
+          "assets/images/beats-logo.png",
+          width: screenHeight * 0.1,
+          height: screenHeight * 0.1,
+        ));
+  }
 }
-
-
- licenceMusicApp(ctx){
-   showLicensePage(
-                                      context: ctx,
-                                      applicationName: "Beats",
-                                      applicationIcon: Image.asset(
-                                        "assets/images/beats-logo.png",
-                                        width: screenHeight*0.1,
-                                        height: screenHeight*0.1,
-                                      ));
-}
-
-}
-
-

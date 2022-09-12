@@ -6,8 +6,6 @@ import 'package:beat/screens/splash%20screen/splash_screen.dart';
 import 'package:beat/widget%20functions/widget_functions.dart';
 import 'package:flutter/material.dart';
 
-
-
 class OpenPlayListScreen extends StatelessWidget {
   String playListName;
   OpenPlayListScreen({Key? key, required this.playListName}) : super(key: key);
@@ -92,7 +90,8 @@ class OpenPlayListScreen extends StatelessWidget {
                       SizedBox(
                         width: 185,
                         child: Text(
-                          playlistSongsFromDB.value[index].musicArtist.toString(),
+                          playlistSongsFromDB.value[index].musicArtist
+                              .toString(),
                           style: const TextStyle(
                               color: Color.fromARGB(135, 255, 255, 255),
                               overflow: TextOverflow.ellipsis,
@@ -102,9 +101,14 @@ class OpenPlayListScreen extends StatelessWidget {
                     ],
                   ),
                   trailing: openplaylistOptionFunction(
-                      musicId: playlistSongsFromDB.value[index].id,
-                      playNameid: playListName,
-                      context: context),
+                    musicId: playlistSongsFromDB.value[index].id,
+                    playNameid: playListName,
+                    musicName:
+                        playlistSongsFromDB.value[index].musicName.toString(),
+                    artistName:
+                        playlistSongsFromDB.value[index].musicArtist.toString(),
+                    context: context,
+                  ),
                 );
               },
             );

@@ -10,6 +10,7 @@ import 'package:beat/main.dart';
 import 'package:beat/screens/splash%20screen/splash_screen.dart';
 import 'package:beat/widget%20functions/widget_functions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 //----------- Get All Music From DB - Start -----------------------------
 
@@ -164,3 +165,20 @@ Future<void> renamePlalistfunction(String playlistname, String newplaylistname) 
 
 
 // ------------- Add To Playlist Screen - End-----------------
+
+
+
+//-----------Playlist songs count -- start -----------
+
+
+
+String playlistSongsCount (String? plalistName){
+final val = playlistDB.get(plalistName);
+if(val!.isEmpty){
+  return '0';
+}else{
+  return val.length.toString();   
+}  
+}
+
+//-----------Playlist songs count -- End -------------

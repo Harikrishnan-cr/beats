@@ -59,7 +59,7 @@ class _MyMusicScreenState extends State<MyMusicScreen>
                 ],
               ),
               trailing: myMusicOptionFunction(
-                  allAudioListFromDB[index].id.toString(), context),
+                  allAudioListFromDB[index].id.toString(), context,musicName:allAudioListFromDB[index].musicName.toString(),artistName: allAudioListFromDB[index].musicArtist.toString()),
               onTap: () async {
                 await createAudiosFileList(allAudioListFromDB);
                 await audioPlayer.playlistPlayAtIndex(index);

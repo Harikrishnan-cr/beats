@@ -370,7 +370,8 @@ createPlayList(BuildContext context) {
 
 // ---------------------- Options -----------------------------------
 
-Widget myMusicOptionFunction(String id, context) {
+Widget myMusicOptionFunction(String id, context,
+    {String? musicName, String? artistName}) {
   return PopupMenuButton(
     position: PopupMenuPosition.under,
     elevation: 0,
@@ -389,7 +390,10 @@ Widget myMusicOptionFunction(String id, context) {
         }
       } else if (value == MyListMenu.item2) {
         addToPlayList(context, playId: id);
-      } else if (value == MyListMenu.item3) {}
+      } else if (value == MyListMenu.item3) {
+        infoScreenMymusic(context,
+            musicName: musicName, artistName: artistName);
+      }
     },
     icon: const Icon(
       Icons.more_vert,
@@ -470,7 +474,11 @@ Widget playlistOptionFunction({String? playNameid, context}) {
       } else if (value == PlayListMenu.item2) {
         await playlistDelete(playNameid.toString());
         snackBar('playlist deleted successfully', context, redColour);
-      } else if (value == PlayListMenu.item3) {}
+      } else if (value == PlayListMenu.item3) {
+        final num = playlistSongsCount(playNameid);
+        infoPlaylistScreen(context,
+            playlsistName: playNameid, playlistLength: num);
+      }
     },
     icon: const Icon(
       Icons.more_vert,
@@ -507,7 +515,11 @@ enum PlayListMenu {
 //----------------------Open PlayList Options - starts ---------------------------//
 
 Widget openplaylistOptionFunction(
-    {String? playNameid, context, String? musicId}) {
+    {String? playNameid,
+    context,
+    String? musicId,
+    String? musicName,
+    String? artistName}) {
   return PopupMenuButton(
     position: PopupMenuPosition.under,
     elevation: 0,
@@ -526,7 +538,12 @@ Widget openplaylistOptionFunction(
         }
       } else if (value == OpenPlayListMenu.item2) {
         playlistSongDelete(musicId.toString(), playNameid.toString());
-      } else if (value == OpenPlayListMenu.item3) {}
+      } else if (value == OpenPlayListMenu.item3) {
+        infoPlaylistOpenScreen(context,
+            playlsistName: playNameid,
+            musicName: musicName,
+            artistName: artistName);
+      }
     },
     icon: const Icon(
       Icons.more_vert,
@@ -757,5 +774,84 @@ Widget buildshet(BuildContext context, String? playlistName) {
   );
 }
 
-
 //-------------Add songs from Open Playlist - end --------------------------
+
+//-----------info My music screen - start ------------------------------
+
+Future infoScreenMymusic(ctx, {String? musicName, String? artistName}) async {
+  return showDialog(
+    context: ctx,
+    builder: (context) {
+      return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 118, 65, 153),
+          contentPadding: EdgeInsets.all(0.5),
+          title: Column(
+            children: [
+              Text('Music Name : $musicName'),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Text('Artist : $artistName')
+            ],
+          ));
+    },
+  );
+}
+
+//-----------info mymusic screen - end -------------------
+
+//----------Info Playlist Screen - start --------------------
+
+Future infoPlaylistScreen(ctx,
+    {String? playlsistName, String? playlistLength}) {
+  return showDialog(
+    context: ctx,
+    builder: (context) {
+      return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 118, 65, 153),
+          contentPadding: EdgeInsets.all(0.5),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('Playlist Name : $playlsistName'),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Text('No.of Songs : $playlistLength')
+            ],
+          ));
+    },
+  );
+}
+
+//----------Info Playlist Screen - End ----------------------
+
+//----------Info Playlist Open - start --------------------
+
+Future infoPlaylistOpenScreen(ctx,
+    {String? playlsistName, String? musicName, String? artistName}) {
+  return showDialog(
+    context: ctx,
+    builder: (context) {
+      return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 118, 65, 153),
+          contentPadding: EdgeInsets.all(0.5),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('Playlist Name : $playlsistName'),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Text('Music Name : $musicName'),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Text('Artist : $artistName')
+            ],
+          ));
+    },
+  );
+}
+
+//----------Info Playlist Open - End  ----------------------

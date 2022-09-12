@@ -1,6 +1,4 @@
 
-
-
 import 'package:beat/database/model/music_model.dart';
 import 'package:beat/music%20functions/play_audio_function.dart';
 import 'package:beat/screens/splash%20screen/splash_screen.dart';
@@ -117,7 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   fontSize: 14),
                             ),
                             trailing: myMusicOptionFunction(
-                                musicSearch[index].id.toString(), context),
+                                musicSearch[index].id.toString(), context,musicName:musicSearch[index].musicName.toString(),artistName: musicSearch[index].musicArtist.toString()),
                             onTap: () async {
                               await createAudiosFileList(allAudioListFromDB);
                               final index1 = allAudioListFromDB.indexWhere(
