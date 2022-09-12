@@ -28,8 +28,12 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        leading: IconButton(onPressed: () {
+          Navigator.pop(context);
+        }, icon: const Icon(Icons.keyboard_arrow_down_outlined,color: Colors.white,size: 40,)),
         toolbarHeight: screenHeight * 0.12,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 1),
           child: Text('Now Playing'),
