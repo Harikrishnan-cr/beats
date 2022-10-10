@@ -1,13 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:beat/database/functions/database_function.dart';
+
+import 'package:beat/controller/liked%20controller%20screen/liked_controller.dart';
+import 'package:beat/controller/playlist%20controller%20screen/playlist_controller.dart';
 import 'package:beat/main.dart';
-import 'package:beat/now%20playing/now_playing_screen.dart';
-import 'package:beat/screens/splash%20screen/splash_screen.dart';
+import 'package:beat/view/splash%20screen/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
-import 'package:marquee/marquee.dart';
+
+
 
 ValueNotifier<bool> notification = ValueNotifier(true);
 
@@ -19,6 +21,8 @@ double screenHeight = 0;
 double screenWidth = 0;
 
 ValueNotifier<bool> miniPlayerVisibility = ValueNotifier(false);
+LikedScreenController likedScreenController = Get.put(LikedScreenController());
+PlaylistController playlistController = Get.put(PlaylistController());
 
 // --------- basic colours in app - start -------------------------
 
@@ -28,125 +32,6 @@ Color redColour = const Color.fromARGB(200, 241, 6, 6);
 Color blackColour = const Color.fromARGB(219, 0, 0, 0);
 Color greencolour = const Color.fromARGB(200, 32, 224, 7);
 
-// --------- basic colours in app -end -------------------------
-
-Widget functionMiniPlayer(BuildContext context) {
-  return audioPlayer.builderRealtimePlayingInfos(
-      builder: (context, realtimePlayingInfos) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return PlayMusicScreen();
-        }));
-      },
-      child: Visibility(
-        visible: miniPlayerVisibility.value,
-        child: Container(
-          decoration: BoxDecoration(
-              // color: Colors.black,
-              color: Color.fromARGB(184, 118, 65, 153),
-              borderRadius: BorderRadius.circular(14)),
-          // color: Colors.yellow,
-          height: 75,
-          // color: Colors.amber,
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: Image.asset(
-                  'assets/images/music-open.png',
-                  fit: BoxFit.cover,
-                  height: 78,
-                  width: 78,
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 20,
-                        child: Marquee(
-                          blankSpace: 60,
-                          velocity: 30,
-                          startAfter: Duration(seconds: 3),
-                          text: realtimePlayingInfos
-                              .current!.audio.audio.metas.title
-                              .toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () async {
-                      if (nextSongIssue) {
-                        nextSongIssue = false;
-                        await audioPlayer.previous();
-                        nextSongIssue = true;
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.skip_previous,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        audioPlayer.playOrPause();
-                      },
-                      icon: realtimePlayingInfos.isPlaying
-                          ? const Icon(
-                              Icons.pause,
-                              size: 40,
-                              color: Colors.white,
-                            )
-                          : const Icon(
-                              Icons.play_arrow_rounded,
-                              size: 40,
-                              color: Colors.white,
-                            )),
-                  IconButton(
-                    onPressed: () async {
-                      if (nextSongIssue) {
-                        nextSongIssue = false;
-                        await audioPlayer.next();
-                        nextSongIssue = true;
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.skip_next,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  });
-}
-
-// ------------------- Add to Playlis ----------------------------------------------
 
 Future addToPlayList(
   ctx, {
@@ -155,9 +40,9 @@ Future addToPlayList(
   return showDialog(
     context: (ctx),
     builder: (context) {
-      return ValueListenableBuilder(
-          valueListenable: playlistAddList,
-          builder: (context, value, _) {
+      return Obx(
+          
+          () {
             return AlertDialog(
               elevation: 4,
               backgroundColor: const Color.fromARGB(169, 0, 0, 0),
@@ -174,7 +59,7 @@ Future addToPlayList(
                   SizedBox(
                       height: 100.0,
                       width: 300.0,
-                      child: playlistAddList.value.isEmpty
+                      child: playlistAddList.isEmpty
                           ? TextButton(
                               onPressed: () {},
                               child: Text(
@@ -185,7 +70,7 @@ Future addToPlayList(
                                     fontSize: 15),
                               ))
                           : ListView.builder(
-                              itemCount: playlistAddList.value.length,
+                              itemCount: playlistAddList.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
                                     title: TextButton(
@@ -197,20 +82,20 @@ Future addToPlayList(
                                                 context,
                                                 Colors.black);
                                           } else {
-                                            addtoPlaylistSongs(
+                                            playlistController.addtoPlaylistSongs(
                                                 playId.toString(),
-                                                playlistAddList.value[index]
+                                                playlistAddList[index]
                                                     .toString());
 
                                             Navigator.pop(context);
                                             return snackBar(
-                                                "Song added to Playlist ${playlistAddList.value[index].toString()}",
+                                                "Song added to Playlist ${playlistAddList[index].toString()}",
                                                 context,
                                                 Colors.black);
                                           }
                                         },
                                         child: Text(
-                                            playlistAddList.value[index]
+                                            playlistAddList[index]
                                                 .toString(),
                                             style: TextStyle(
                                                 color: Colors.white))));
@@ -343,8 +228,8 @@ createPlayList(BuildContext context) {
                       playlistNameController.clear();
                       Navigator.of(context).pop();
                     } else {
-                      playlistCreation(playlistNameController.text);
-                      playListUpdate();
+                      playlistController.playlistCreation(playlistNameController.text);
+                      playlistController.playListUpdate();
                       playlistNameController.clear();
                       Navigator.of(context).pop();
                     }
@@ -378,13 +263,13 @@ Widget myMusicOptionFunction(String id, context,
     onSelected: (value) {
       if (value == MyListMenu.item1) {
         if (likedListTemp.contains(id)) {
-          likedRemove(id);
+          likedScreenController.likedRemove(id);
           favarateIcon(
             favbutton: false,
           );
           snackBar('Remove from to Liked', context, Colors.red);
         } else {
-          addLikedToDB(id);
+          likedScreenController.addLikedToDB(id);
           snackBar('Add to liked', context, Colors.green);
           favarateIcon(favbutton: true);
         }
@@ -448,9 +333,9 @@ Widget favarateIcon({bool? favbutton, id}) {
     child: LikeButton(
       likeBuilder: (islike) {
         if (!islike) {
-          likedRemove(id);
+          likedScreenController.likedRemove(id);
         } else {
-          addLikedToDB(id);
+          likedScreenController.addLikedToDB(id);
         }
         return null;
       },
@@ -472,10 +357,28 @@ Widget playlistOptionFunction({String? playNameid, context}) {
         await renamPlayList(context, playNameid.toString());
         snackBar('playlist Updated successfully', context, greencolour);
       } else if (value == PlayListMenu.item2) {
-        await playlistDelete(playNameid.toString());
+
+Get.defaultDialog(
+  title: '! Delete',
+  backgroundColor: secondaryColour,
+  buttonColor: Colors.transparent,  
+  confirmTextColor: greencolour,
+ titleStyle: TextStyle(fontSize: 21,fontWeight: FontWeight.bold,color: Colors.white),  
+ middleTextStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.white),
+  cancelTextColor: redColour,  
+  middleText: 'Playlsit $playNameid will be deleted',
+  onConfirm: () async{
+    await playlistController.playlistDelete(playNameid.toString());
         snackBar('playlist deleted successfully', context, redColour);
+        Get.back();  
+  },
+
+  onCancel: () => Get.back(),
+);
+
+        
       } else if (value == PlayListMenu.item3) {
-        final num = playlistSongsCount(playNameid);
+        final num = playlistController.playlistSongsCount(playNameid);
         infoPlaylistScreen(context,
             playlsistName: playNameid, playlistLength: num);
       }
@@ -526,18 +429,18 @@ Widget openplaylistOptionFunction(
     onSelected: (value) {
       if (value == OpenPlayListMenu.item1) {
         if (likedListTemp.contains(musicId)) {
-          likedRemove(musicId.toString());
+          likedScreenController.likedRemove(musicId.toString());
           favarateIcon(
             favbutton: false,
           );
           snackBar('Remove from to Liked', context, Colors.red);
         } else {
-          addLikedToDB(musicId.toString());
+          likedScreenController.addLikedToDB(musicId.toString());
           snackBar('Add to liked', context, Colors.green);
           favarateIcon(favbutton: true);
         }
       } else if (value == OpenPlayListMenu.item2) {
-        playlistSongDelete(musicId.toString(), playNameid.toString());
+        playlistController.playlistSongDelete(musicId.toString(), playNameid.toString());
       } else if (value == OpenPlayListMenu.item3) {
         infoPlaylistOpenScreen(context,
             playlsistName: playNameid,
@@ -672,7 +575,7 @@ renamPlayList(BuildContext context, String currentName) {
                       playlistNameController.clear();
                       Navigator.of(context).pop();
                     } else {
-                      renamePlalistfunction(
+                      playlistController.renamePlalistfunction(
                           currentName, renamePlalisttNameController.text);
                       renamePlalisttNameController.clear();
                       Navigator.of(context).pop();
@@ -700,9 +603,8 @@ renamPlayList(BuildContext context, String currentName) {
 //-------------Add songs from Open Playlist - start --------------------------
 
 Widget buildshet(BuildContext context, String? playlistName) {
-  return ValueListenableBuilder(
-    valueListenable: playlistSongsFromDB,
-    builder: (context, value, child) {
+  
+  
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -711,67 +613,69 @@ Widget buildshet(BuildContext context, String? playlistName) {
           child: ListView.builder(
             itemCount: allAudioListFromDB.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: Image.asset(
-                    'assets/images/music (3).png',
-                    fit: BoxFit.cover,
-                    width: 48,
-                  ),
-                ),
-                title: SizedBox(
-                  width: 140,
-                  child: Text(
-                    allAudioListFromDB[index].musicName.toString(),
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 160,
-                      child: Text(
-                        allAudioListFromDB[index].musicArtist.toString(),
-                        style: const TextStyle(
-                            color: Color.fromARGB(135, 255, 255, 255),
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 14),
+              return Obx(
+                 () {
+                  return ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.asset(
+                        'assets/images/music (3).png',
+                        fit: BoxFit.cover,
+                        width: 48,
                       ),
                     ),
-                  ],
-                ),
-                trailing: IconButton(
-                  icon: playlistSongsFromDB.value
-                          .contains(allAudioListFromDB[index])
-                      ? Icon(
-                          Icons.remove_circle,
-                          size: 35,
-                          color: redColour,
-                        )
-                      : Icon(Icons.add_circle,
-                          size: 35, color: Color.fromARGB(200, 32, 224, 7)),
-                  onPressed: () async {
-                    tempPlaylistId
-                            .contains(allAudioListFromDB[index].id.toString())
-                        ? await playlistSongDelete(
-                            allAudioListFromDB[index].id.toString(),
-                            playlistName.toString())
-                        : await addtoPlaylistSongs(
-                            allAudioListFromDB[index].id.toString(),
-                            playlistName.toString());
-                    await playListUpdate();
-                  },
-                ),
+                    title: SizedBox(
+                      width: 140,
+                      child: Text(
+                        allAudioListFromDB[index].musicName.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 160,
+                          child: Text(
+                            allAudioListFromDB[index].musicArtist.toString(),
+                            style: const TextStyle(
+                                color: Color.fromARGB(135, 255, 255, 255),
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: playlistSongsFromDB
+                              .contains(allAudioListFromDB[index])
+                          ? Icon(
+                              Icons.remove_circle,
+                              size: 35,
+                              color: redColour,
+                            )
+                          : Icon(Icons.add_circle,
+                              size: 35, color: Color.fromARGB(200, 32, 224, 7)),
+                      onPressed: () async {
+                        tempPlaylistId
+                                .contains(allAudioListFromDB[index].id.toString())
+                            ? await playlistController.playlistSongDelete(
+                                allAudioListFromDB[index].id.toString(),
+                                playlistName.toString())
+                            : await playlistController.addtoPlaylistSongs(
+                                allAudioListFromDB[index].id.toString(),
+                                playlistName.toString());
+                        await playlistController.playListUpdate();
+                      },
+                    ),
+                  );
+                }
               );
             },
           ),
         ),
       );
-    },
-  );
 }
 
 //-------------Add songs from Open Playlist - end --------------------------

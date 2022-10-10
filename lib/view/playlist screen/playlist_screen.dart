@@ -1,19 +1,21 @@
 
 
-import 'package:beat/database/functions/database_function.dart';
-import 'package:beat/screens/playlist%20screen/open_playlist_screen.dart';
+import 'package:beat/controller/playlist%20controller%20screen/playlist_controller.dart';
+import 'package:beat/view/playlist%20screen/open_playlist_screen.dart';
 import 'package:beat/widget%20functions/widget_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 class PlaylistScreen extends StatelessWidget {
-  const PlaylistScreen({Key? key}) : super(key: key);
-
+   PlaylistScreen({Key? key}) : super(key: key);
+final PlaylistController playlistController = Get.put(PlaylistController());
   @override
   Widget build(BuildContext context) {
+    playlistController.playListUpdate();
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    playListUpdate();
+    
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -26,10 +28,10 @@ class PlaylistScreen extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        body: ValueListenableBuilder(
-            valueListenable: playlistAddList,
-            builder: (context, value, child) {
-              return playlistAddList.value.isEmpty
+        body: Obx(
+          
+             () {
+              return playlistAddList.isEmpty
                   ? const Center(
                       child: Text(
                         'Create Your Playlist',
@@ -47,7 +49,7 @@ class PlaylistScreen extends StatelessWidget {
                               height: 5,
                             );
                           },
-                          itemCount: playlistAddList.value.length,
+                          itemCount: playlistAddList.length,
                           itemBuilder: (context, index) {
                             return Card(
                               color: const Color.fromARGB(184, 118, 65, 153),
@@ -55,21 +57,21 @@ class PlaylistScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(15)),
                               child: ListTile(
                                   onTap: () {
-                                    getPlaylistSongs(
-                                        playlistAddList.value[index].toString());
-                                    playListUpdate();
+                                    playlistController.getPlaylistSongs(
+                                        playlistAddList[index].toString());
+                                    playlistController.playListUpdate();
 
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                       builder: (context) {
                                         return OpenPlayListScreen(
                                             playListName:
-                                                playlistAddList.value[index].toString());
+                                                playlistAddList[index].toString());
                                       },
                                     ));
                                   },
                                   title: Text(
-                                    playlistAddList.value[index].toString(),
+                                    playlistAddList[index].toString(),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
@@ -77,7 +79,7 @@ class PlaylistScreen extends StatelessWidget {
                                   ),
                                   trailing: playlistOptionFunction(
                                       playNameid:
-                                          playlistAddList.value[index].toString(),
+                                          playlistAddList[index].toString(),
                                       context: context)),
                             );
                           }));

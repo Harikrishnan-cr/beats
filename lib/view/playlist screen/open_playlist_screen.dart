@@ -1,17 +1,22 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
 
+import 'package:beat/controller/playlist%20controller%20screen/playlist_controller.dart';
 import 'package:beat/music%20functions/play_audio_function.dart';
-import 'package:beat/now%20playing/now_playing_screen.dart';
-import 'package:beat/screens/splash%20screen/splash_screen.dart';
+import 'package:beat/view/now%20playing/now_playing_screen.dart';
+import 'package:beat/view/splash%20screen/splash_screen.dart';
+import 'package:beat/view/widgets/mini%20player/miniplayer_widget.dart';
 import 'package:beat/widget%20functions/widget_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class OpenPlayListScreen extends StatelessWidget {
   String playListName;
   OpenPlayListScreen({Key? key, required this.playListName}) : super(key: key);
+final PlaylistController playlistController = Get.put(PlaylistController());
 
   @override
   Widget build(BuildContext context) {
+    // playlistController.playListUpdate();  
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: const Color.fromARGB(184, 118, 65, 153),
@@ -24,10 +29,10 @@ class OpenPlayListScreen extends StatelessWidget {
           ),
           child: const Icon(Icons.queue_music_outlined),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: functionMiniPlayer(context),
-        ),
+        // bottomNavigationBar: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: functionMiniPlayer(context),
+        // ),
         appBar: AppBar(
           // actions: [
           //   IconButton(onPressed: () =>showModalBottomSheet(
@@ -49,24 +54,24 @@ class OpenPlayListScreen extends StatelessWidget {
                 color: Colors.white),
           ),
         ),
-        body: ValueListenableBuilder(
-          valueListenable: playlistSongsFromDB,
-          builder: (context, value, child) {
-            return ListView.separated(
+        body: Obx(
+         
+        () {
+            return playlistSongsFromDB.isNotEmpty?  ListView.separated(
               separatorBuilder: (context, index) {
                 return const Divider();
               },
-              itemCount: playlistSongsFromDB.value.length,
+              itemCount: playlistSongsFromDB.length,
               itemBuilder: (context, index) {
-                return ListTile(
+                return  ListTile(
                   onTap: () async {
-                    await createAudiosFileList(playlistSongsFromDB.value);
+                    await createAudiosFileList(playlistSongsFromDB);
 
                     await audioPlayer.playlistPlayAtIndex(index);
 
                     await Navigator.of(context)
                         .push(MaterialPageRoute(builder: (ctx1) {
-                      return const PlayMusicScreen();
+                      return  PlayMusicScreen();
                     }));
 
                     miniPlayerVisibility.value = true;
@@ -80,7 +85,7 @@ class OpenPlayListScreen extends StatelessWidget {
                     ),
                   ),
                   title: Text(
-                    playlistSongsFromDB.value[index].musicName.toString(),
+                    playlistSongsFromDB[index].musicName.toString(),
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
@@ -90,7 +95,7 @@ class OpenPlayListScreen extends StatelessWidget {
                       SizedBox(
                         width: 185,
                         child: Text(
-                          playlistSongsFromDB.value[index].musicArtist
+                          playlistSongsFromDB[index].musicArtist
                               .toString(),
                           style: const TextStyle(
                               color: Color.fromARGB(135, 255, 255, 255),
@@ -101,18 +106,26 @@ class OpenPlayListScreen extends StatelessWidget {
                     ],
                   ),
                   trailing: openplaylistOptionFunction(
-                    musicId: playlistSongsFromDB.value[index].id,
+                    musicId: playlistSongsFromDB[index].id,
                     playNameid: playListName,
                     musicName:
-                        playlistSongsFromDB.value[index].musicName.toString(),
+                        playlistSongsFromDB[index].musicName.toString(),
                     artistName:
-                        playlistSongsFromDB.value[index].musicArtist.toString(),
+                        playlistSongsFromDB[index].musicArtist.toString(),
                     context: context,
                   ),
                 );
               },
-            );
+            ):Center(child: Text('Add Songs to $playListName',   style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 25),));
           },
-        ));
+        ),
+         bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: functionMiniPlayer(context),
+        ),
+        );
   }
 }

@@ -1,7 +1,15 @@
-import 'package:beat/screens/splash%20screen/splash_screen.dart';
+import 'dart:developer';
+
+import 'package:beat/view/splash%20screen/splash_screen.dart';
 import 'package:beat/widget%20functions/widget_functions.dart';
 
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
+const emial = 'harikrishnancr1725@gmail.com';
+const subjectEmail = 'Abou Beats App';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -62,40 +70,68 @@ class SettingsScreen extends StatelessWidget {
                     height: 20,
                   ),
                   Row(
-                    children: const [
-                      Icon(
+                    children: [
+                      const Icon(
                         Icons.mail,
                         size: 24,
                         color: Colors.white,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 18,
                       ),
-                      Text('Contact Us',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18.5,
-                              color: Colors.white))
+                      GestureDetector(
+                        onTap: () async{
+                          final uriContact = 'mailto:$emial?subject=${Uri.encodeFull(subjectEmail)}';
+
+                          try {
+                              if (await canLaunchUrl(Uri.parse(uriContact))) {
+                                await launchUrl(Uri.parse(uriContact));  
+                              }
+                            } catch (e) {
+                              log(e.toString());
+                            }
+                          log('contact us');
+                        },
+                        child: const Text('Contact Us',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18.5,
+                                color: Colors.white)),
+                      )
                     ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   Row(
-                    children: const [
-                      Icon(
+                    children: [
+                      const Icon(
                         Icons.message,
                         size: 24,
                         color: Colors.white,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 18,
                       ),
-                      Text('Feedback',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18.5,
-                              color: Colors.white))
+                      GestureDetector(
+                        onTap: () async {
+                          log('Feedba');
+                          const urls =
+                              'https://play.google.com/store/apps/details?id=in.music.beat';
+                          try {
+                            if (await canLaunchUrl(Uri.parse(urls))) {
+                              await launchUrl(Uri.parse(urls));
+                            }
+                          } catch (e) {
+                            log(e.toString());
+                          }
+                        },
+                        child: const Text('Feedback',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18.5,
+                                color: Colors.white)),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -171,7 +207,18 @@ class SettingsScreen extends StatelessWidget {
                             color: Colors.white,
                           )),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            log('Feedba');
+                            const urls =
+                                'https://www.app-privacy-policy.com/live.php?token=KCQD0h2AcRvI3fwegQRq47FTabbGtGyj';
+                            try {
+                              if (await canLaunchUrl(Uri.parse(urls))) {
+                                await launchUrl(Uri.parse(urls));
+                              }
+                            } catch (e) {
+                              log(e.toString());
+                            }
+                          },
                           child: const Text('PRIVACY POLICY',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
@@ -183,14 +230,20 @@ class SettingsScreen extends StatelessWidget {
                     children: [
                       IconButton(
                           padding: const EdgeInsets.all(0),
-                          onPressed: () {},
+                          onPressed: () {
+                            // log('share');  
+                            // Share.share('check out my website https://example.com', subject: 'Look what I made!');
+                          },
                           icon: const Icon(
                             Icons.share,
                             size: 20,
                             color: Colors.white,
                           )),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            log('share');  
+                            Share.share('https://play.google.com/store/apps/details?id=in.music.beat', subject: 'Look what I made!');
+                          },
                           child: const Text('SHARE',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,

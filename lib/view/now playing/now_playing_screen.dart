@@ -1,7 +1,8 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, must_be_immutable
 
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:beat/screens/splash%20screen/splash_screen.dart';
+
+import 'package:beat/view/splash%20screen/splash_screen.dart';
 import 'package:beat/widget%20functions/widget_functions.dart';
 
 import 'package:flutter/material.dart';
@@ -13,16 +14,18 @@ RealtimePlayingInfos? realtimePlayingInfosPlayMusicScreen;
 ValueNotifier<bool> loopButton = ValueNotifier(true);
 bool nextSongIssue = true;
 
-class PlayMusicScreen extends StatefulWidget {
-  const PlayMusicScreen({Key? key}) : super(key: key);
+class PlayMusicScreen extends StatelessWidget {
+  BuildContext? ctx;
+   PlayMusicScreen({Key? key}) : super(key: key);
 
-  @override
-  State<PlayMusicScreen> createState() => _PlayMusicScreenState();
-}
+//   @override
+//   State<PlayMusicScreen> createState() => _PlayMusicScreenState();
+// }
 
-class _PlayMusicScreenState extends State<PlayMusicScreen> {
+// class _PlayMusicScreenState extends State<PlayMusicScreen> {
   @override
   Widget build(BuildContext context) {
+    ctx = context;
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -266,7 +269,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
             },) ),
               IconButton(
                   onPressed: (() {
-                    addToPlayList(context,
+                    addToPlayList(ctx,
                         playId: realtimePlayingInfos
                             .current!.audio.audio.metas.id
                             .toString());

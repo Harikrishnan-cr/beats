@@ -1,6 +1,7 @@
 import 'package:beat/database/model/music_model.dart';
-import 'package:beat/screens/splash%20screen/splash_screen.dart';
+import 'package:beat/view/splash%20screen/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 
@@ -23,22 +24,18 @@ Future<void> main() async {
   runApp(const MusicApp());
 }
 
-class MusicApp extends StatefulWidget {
+class MusicApp extends StatelessWidget {
   const MusicApp({Key? key}) : super(key: key);
 
-  @override
-  State<MusicApp> createState() => _MusicAppState();
-}
-
-class _MusicAppState extends State<MusicApp> {
+ 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         canvasColor: const Color.fromARGB(255, 36, 19, 60),
       ),
       debugShowCheckedModeBanner: false,
-      home: const ScreenSplash(),
+      home:  ScreenSplash(),
     );
   }
 }

@@ -1,41 +1,45 @@
 
 
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:beat/screens/Home%20screen/my_music_screen.dart';
-import 'package:beat/screens/liked%20screen/liked_screen.dart';
-import 'package:beat/screens/playlist%20screen/playlist_screen.dart';
-import 'package:beat/screens/search%20screen/search_screen.dart';
-import 'package:beat/screens/settings%20screen/settings_screen.dart';
-import 'package:beat/widget%20functions/widget_functions.dart';
+import 'package:beat/controller/Home%20screen%20controller/home_controller.dart';
+
+import 'package:beat/view/Home%20screen/my_music_screen.dart';
+import 'package:beat/view/liked%20screen/liked_screen.dart';
+import 'package:beat/view/playlist%20screen/playlist_screen.dart';
+import 'package:beat/view/search%20screen/search_screen.dart';
+import 'package:beat/view/settings%20screen/settings_screen.dart';
+import 'package:beat/view/widgets/mini%20player/miniplayer_widget.dart';
+
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 
-class TabHomeScreen extends StatefulWidget {
-  const TabHomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<TabHomeScreen> createState() => _TabHomeScreenState();
-}
+class TabHomeScreen extends StatelessWidget {
+   TabHomeScreen({Key? key}) : super(key: key);
 
-class _TabHomeScreenState extends State<TabHomeScreen> {
-  final AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
+//   @override
+//   State<TabHomeScreen> createState() => _TabHomeScreenState();
+// }
 
-  @override
-  void initState() {
-    // ignore: todo
-    // TODO: implement initState
-    super.initState();
-  }
+// class _TabHomeScreenState extends State<TabHomeScreen> {
+  // final AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
+final HomeController homeController = Get.put(HomeController());
+  // @override
+  // void initState() {
+  //   // ignore: todo
+  //   // TODO: implement initState
+  //   super.initState();
+  // }
 
-  @override
-  void dispose() {
-    // ignore: todo
-    // TODO: implement dispose
-    audioPlayer.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // ignore: todo
+  //   // TODO: implement dispose
+  //   audioPlayer.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,7 @@ class _TabHomeScreenState extends State<TabHomeScreen> {
                 IconButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (ctx1) {
-                      return const SearchScreen();
+                      return  SearchScreen();
                     }));
                   },
                   icon: const Icon(Icons.search_rounded),
@@ -101,7 +105,7 @@ class _TabHomeScreenState extends State<TabHomeScreen> {
                     ),
                   ]),
             ),
-            body: const TabBarView(
+            body:  TabBarView(
                 children: [MyMusicScreen(), LikedScreen(), PlaylistScreen()]),
             bottomNavigationBar: Padding(
                 padding: const EdgeInsets.all(8.0),
